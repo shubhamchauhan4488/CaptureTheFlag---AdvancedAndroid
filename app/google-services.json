@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "410219025249",
+    "firebase_url": "https://capturetheflag-a5d93.firebaseio.com",
+    "project_id": "capturetheflag-a5d93",
+    "storage_bucket": "capturetheflag-a5d93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410219025249:android:7123c5f2aa50f178",
+        "android_client_info": {
+          "package_name": "com.lambton.capturetheflag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410219025249-e4f6bjt32f1fb4ci3sftan7td6t1t5bo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5VQx_yW2pZTPJzIQdNBH-2_5KsVOOmho"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
