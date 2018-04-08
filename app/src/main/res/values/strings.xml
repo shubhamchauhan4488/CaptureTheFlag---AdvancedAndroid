@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CaptureTheFlag</string>
+    <string name="title_activity_geofire">Map</string>
 </resources>
