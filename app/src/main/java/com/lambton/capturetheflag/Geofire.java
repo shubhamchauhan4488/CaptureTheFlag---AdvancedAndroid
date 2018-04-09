@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.Manifest;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,7 +20,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+<<<<<<< HEAD
 import com.google.android.gms.maps.model.CircleOptions;
+=======
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+>>>>>>> 60d9c9545c408b7950e7c9c2bb11ba3799d9bac1
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,14 +55,13 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
+
+        googleapiclient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(@Nullable Bundle bundle) {
 
                     }
-
                     @Override
                     public void onConnectionSuspended(int i) {
 
@@ -69,22 +73,32 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
                         Log.d(TAG, "Failed to connect to Google API Client -" + connectionResult.getErrorMessage());
+<<<<<<< HEAD
                         requestPermissions(new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION,
 
                                     Manifest.permission.ACCESS_COARSE_LOCATION
+=======
+                        requestPermissions(new String[] {
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+>>>>>>> 60d9c9545c408b7950e7c9c2bb11ba3799d9bac1
                         },1234);
 
                     }
-                });
+                })
+                .addApi( LocationServices.API )
+                .build();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(43.7822457, -79.349838);
+<<<<<<< HEAD
         mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
         LatLng dangerous_area = new LatLng(37.7533,-122.4056);
         mMap.addCircle(new CircleOptions()
@@ -93,6 +107,13 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                 .strokeColor(Color.BLUE)
                 .fillColor(0x220000FF)
                 .strokeWidth(5.0f)
+=======
+
+        geoFenceMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        beginGeofence();
+>>>>>>> 60d9c9545c408b7950e7c9c2bb11ba3799d9bac1
     }
 
     @Override
@@ -102,8 +123,6 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                 beginGeofence();
 
             }
-
-
         }
         return true;
     }
@@ -133,11 +152,25 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
         // Start Geofence creation process
         private void beginGeofence () {
             Log.i(TAG, "startGeofence()");
+
+
             if (geoFenceMarker != null) {
                 Geofence geofence = createGeofence(geoFenceMarker.getPosition(), GEOFENCE_RADIUS);
                 GeofencingRequest geofenceRequest = createGeofenceRequest(geofence);
-            } else {
+            }
+            else {
                 Log.e(TAG, "Geofence marker is null");
 
             }
+}
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Call GoogleApiClient connection when starting the Activity
+        googleapiclient.connect();
+    }
+
+
 }
