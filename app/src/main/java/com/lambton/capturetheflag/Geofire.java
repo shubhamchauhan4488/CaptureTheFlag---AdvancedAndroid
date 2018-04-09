@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.Manifest;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -42,14 +44,13 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
+
+        googleapiclient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(@Nullable Bundle bundle) {
 
                     }
-
                     @Override
                     public void onConnectionSuspended(int i) {
 
@@ -60,24 +61,29 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback {
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
                         Log.d(TAG, "Failed to connect to Google API Client -" + connectionResult.getErrorMessage());
-                        requestPermissions(new String[]) {
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-
-                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                        requestPermissions(new String[] {
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
                         },1234);
 
                     }
-                });
+                })
+                .addApi( LocationServices.API )
+                .build();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(43.7822457, -79.349838);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
+
+        geoFenceMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        beginGeofence();
     }
 
     @Override
@@ -87,8 +93,6 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback {
                 beginGeofence();
 
             }
-
-
         }
         return true;
     }
@@ -118,11 +122,25 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback {
         // Start Geofence creation process
         private void beginGeofence () {
             Log.i(TAG, "startGeofence()");
+
+
             if (geoFenceMarker != null) {
                 Geofence geofence = createGeofence(geoFenceMarker.getPosition(), GEOFENCE_RADIUS);
                 GeofencingRequest geofenceRequest = createGeofenceRequest(geofence);
-            } else {
+            }
+            else {
                 Log.e(TAG, "Geofence marker is null");
 
             }
+}
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Call GoogleApiClient connection when starting the Activity
+        googleapiclient.connect();
+    }
+
+
 }
