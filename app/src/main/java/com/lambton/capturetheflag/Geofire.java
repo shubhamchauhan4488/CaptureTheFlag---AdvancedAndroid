@@ -1,5 +1,6 @@
 package com.lambton.capturetheflag;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,16 +14,21 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Geofire extends FragmentActivity implements OnMapReadyCallback {
+public class Geofire extends FragmentActivity implements OnMapReadyCallback,
+
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener{
 
     private GoogleMap mMap;
 
@@ -80,7 +86,13 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(43.7822457, -79.349838);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng dangerous_area = new LatLng(37.7533,-122.4056);
+        mMap.addCircle(new CircleOptions()
+                .center(dangerous_area)
+                .radius(500) //in mts
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(5.0f)
     }
 
     @Override
