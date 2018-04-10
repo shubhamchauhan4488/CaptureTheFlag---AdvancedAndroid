@@ -41,7 +41,7 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
     private Marker geoFenceMarker;
     private static final long GEO_DURATION = 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 500.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 10000.0f; // in meters
 
     GoogleApiClient googleapiclient = null;
 
@@ -79,7 +79,7 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
 
                     }
                 })
-                .addApi( LocationServices.API )
+                .addApi(LocationServices.API )
                 .build();
 
     }
@@ -90,10 +90,10 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(43.7822457, -79.349838);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
-        LatLng dangerous_area = new LatLng(37.7533,-122.4056);
+//         LatLng dangerous_area = new LatLng(37.7533,-122.4056);
         mMap.addCircle(new CircleOptions()
-                .center(dangerous_area)
-                .radius(500) //in mts
+                .center(sydney)
+                .radius(GEOFENCE_RADIUS) //in mts
                 .strokeColor(Color.BLUE)
                 .fillColor(0x220000FF)
                 .strokeWidth(5.0f));
@@ -126,7 +126,6 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                     .build();
         }
 
-
         // Create a Geofence Request
         private GeofencingRequest createGeofenceRequest( Geofence geofence ) {
             Log.d(TAG, "createGeofenceRequest");
@@ -136,12 +135,9 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
                     .build();
         }
 
-
         // Start Geofence creation process
         private void beginGeofence () {
             Log.i(TAG, "startGeofence()");
-
-
             if (geoFenceMarker != null) {
                 Geofence geofence = createGeofence(geoFenceMarker.getPosition(), GEOFENCE_RADIUS);
                 GeofencingRequest geofenceRequest = createGeofenceRequest(geofence);
@@ -155,7 +151,6 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onStart() {
         super.onStart();
-
         // Call GoogleApiClient connection when starting the Activity
         googleapiclient.connect();
     }
