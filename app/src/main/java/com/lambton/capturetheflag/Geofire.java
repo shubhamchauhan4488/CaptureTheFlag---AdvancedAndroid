@@ -1,5 +1,7 @@
 package com.lambton.capturetheflag;
 
+
+
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -42,6 +44,7 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
     private static final long GEO_DURATION = 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 10000.0f; // in meters
+    private static final float GEOFENCE_PLAYFIELD_RADIUS = 5000.0f; // in meters
 
     GoogleApiClient googleapiclient = null;
 
@@ -89,11 +92,20 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(43.7822457, -79.349838);
+        LatLng college = new LatLng(43.773257, -79.335899);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
+        mMap.addMarker(new MarkerOptions().position(college).title("College's Center"));
 //         LatLng dangerous_area = new LatLng(37.7533,-122.4056);
         mMap.addCircle(new CircleOptions()
                 .center(sydney)
                 .radius(GEOFENCE_RADIUS) //in mts
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(5.0f));
+
+        mMap.addCircle(new CircleOptions()
+                .center(college)
+                .radius(GEOFENCE_PLAYFIELD_RADIUS) //in mts
                 .strokeColor(Color.BLUE)
                 .fillColor(0x220000FF)
                 .strokeWidth(5.0f));

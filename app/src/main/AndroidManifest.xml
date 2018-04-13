@@ -19,6 +19,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
 
+
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -30,16 +32,18 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyAlCA_Mzdy5A9q9FRW0GWbuiOkBCh5xDvU" />
 
         <activity
-            android:name=".Geofire"
-            android:label="@string/title_activity_geofire">
 
+        android:name=".Geofire"
+            android:label="@string/title_activity_geofire"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
         </activity>
     </application>
