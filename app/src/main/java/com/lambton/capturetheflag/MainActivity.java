@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
         }else{
             askPermission();
         }
-
     }
 
     // Create GoogleApiClient instance
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
+    // MARK : PERMISSIONS HANDLING
     private final int REQ_PERMISSION = 888;
 
     // Check for permission to access Location
@@ -176,6 +175,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+    //-------------PERMISSIONS HANDLING FINISHED -------------
 
     // Callback called when Map is ready
     @Override
@@ -355,6 +355,7 @@ public class MainActivity extends AppCompatActivity
 
 
     //Making a service to give push notifications when User enters or exists the geofence
+    //TO BE ADDED IN THE PLAYER APP alongwith GeoTransitionservice java file
     private PendingIntent geoFencePendingIntent;
     private final int GEOFENCE_REQ_CODE = 0;
 
