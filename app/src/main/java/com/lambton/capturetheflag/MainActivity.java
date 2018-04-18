@@ -4,21 +4,18 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,8 +24,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,6 +36,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity
         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
         ResultCallback<Status> {
+
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap map;
@@ -70,6 +76,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // initialize GoogleMaps
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("players");
+
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         // create GoogleApiClient
@@ -122,6 +131,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.geofence: {
                 startGeofence();
+                getUpdateOnMap();
                 return true;
             }
             case R.id.clear: {
@@ -184,7 +194,42 @@ public class MainActivity extends AppCompatActivity
         map = googleMap;
 //        map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
-    }
+
+//        databaseReference.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//                LatLng newLocation = new LatLng(
+//                        dataSnapshot.child("latitude").getValue(Long.class),
+//                        dataSnapshot.child("longitude").getValue(Long.class)
+//                );
+//                map.addMarker(new MarkerOptions()
+//                        .position(newLocation)
+//                        .title(dataSnapshot.getKey()));
+//            }
+//
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+ }
 
 //    @Override
 //    public void onMapClick(LatLng latLng) {
@@ -243,24 +288,7 @@ public class MainActivity extends AppCompatActivity
         Log.w(TAG, "onConnectionFailed()");
     }
 
-    // Get last known location
-//    private void getLastKnownLocation() {
-//        Log.d(TAG, "getLastKnownLocation()");
-//        if ( checkPermission() ) {
-//            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-//            if ( lastLocation != null ) {
-//                Log.i(TAG, "LasKnown location. " +
-//                        "Long: " + lastLocation.getLongitude() +
-//                        " | Lat: " + lastLocation.getLatitude());
-//                writeLastLocation();
-//                startLocationUpdates();
-//            } else {
-//                Log.w(TAG, "No location retrieved yet");
-//                startLocationUpdates();
-//            }
-//        }
-//        else askPermission();
-//    }
+
 
 //    private void writeActualLocation(Location location) {
 //        textLat.setText( "Lat: " + location.getLatitude() );
@@ -462,6 +490,48 @@ public class MainActivity extends AppCompatActivity
         if (geoFenceLimits != null)
             geoFenceLimits.remove();
     }
+
+    //get data from fire base and show it on the map.
+    public void getUpdateOnMap(){
+//        = null;
+        if(valueEventListener  == null){
+            valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Player> players =  new ArrayList<>();
+//                    Log.d(TAG, "onChildAdded: ==================PLayer Update============= "+ dataSnapshot.getValue().toString());
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        Log.d(TAG, "onDataChange: ==================Player Object To String========"+snapshot.getValue().toString());
+                        Player player = snapshot.getValue(Player.class);
+                        players.add(player);
+                        Log.d(TAG, "Name: "+player.getPlayerName());
+//                        Log.d(TAG, "Latitude: "+player.latitude);
+//                        Log.d(TAG, "Longitude: "+player.longitude);
+//                        Log.d(TAG, "Team Name: "+player.teamName);
+                    }
+                    setPlayerMaker(players);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            databaseReference.child("Player").addValueEventListener(valueEventListener);
+
+        }
+    }
+
+    public void setPlayerMaker(List<Player> players){
+        if(players.size() != 0) {
+            map.clear();
+            for (Player player : players) {
+                LatLng latLng = new LatLng(player.latitude,player.longitude);
+                map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()));
+            }
+        }
+    }
+
 
 }
 

@@ -2,6 +2,7 @@ package com.lambton.capturetheflag;
 
 
 
+import android.Manifest;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -12,7 +13,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.Manifest;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,19 +24,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-//<<<<<<< HEAD
 import com.google.android.gms.maps.model.CircleOptions;
-//=======
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-//>>>>>>> 60d9c9545c408b7950e7c9c2bb11ba3799d9bac1
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+//<<<<<<< HEAD
+//=======
+//>>>>>>> 60d9c9545c408b7950e7c9c2bb11ba3799d9bac1
 
 public class Geofire extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
+
 
     private GoogleMap mMap;
     private static final String TAG = MainActivity.class.getSimpleName();
