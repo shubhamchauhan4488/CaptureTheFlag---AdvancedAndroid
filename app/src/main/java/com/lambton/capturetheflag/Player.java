@@ -19,6 +19,9 @@ class Player {
     public Player(double latitude, double longitude) {
     }
 
+    public Player() {
+    }
+
     public String getPlayerId() {
         return playerId;
     }
