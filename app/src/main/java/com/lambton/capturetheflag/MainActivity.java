@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -175,7 +177,6 @@ public class MainActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
                     Toast.makeText(this, "Go ahead and Create the Playing Area from Menu", Toast.LENGTH_SHORT).show();
-//                    getLastKnownLocation();
 
                 } else {
                     // Permission denied
@@ -195,47 +196,7 @@ public class MainActivity extends AppCompatActivity
 //        map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
 
-//        databaseReference.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//
-//                LatLng newLocation = new LatLng(
-//                        dataSnapshot.child("latitude").getValue(Long.class),
-//                        dataSnapshot.child("longitude").getValue(Long.class)
-//                );
-//                map.addMarker(new MarkerOptions()
-//                        .position(newLocation)
-//                        .title(dataSnapshot.getKey()));
-//            }
-//
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
  }
-
-//    @Override
-//    public void onMapClick(LatLng latLng) {
-//        Log.d(TAG, "onMapClick("+latLng +")");
-//        markerForGeofence(latLng);
-//    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -288,53 +249,21 @@ public class MainActivity extends AppCompatActivity
         Log.w(TAG, "onConnectionFailed()");
     }
 
-
-
-//    private void writeActualLocation(Location location) {
-//        textLat.setText( "Lat: " + location.getLatitude() );
-//        textLong.setText( "Long: " + location.getLongitude() );
-//
-//        markerLocation(new LatLng(location.getLatitude(), location.getLongitude()));
-//    }
-//
-//    private void writeLastLocation() {
-//        writeActualLocation(lastLocation);
-//    }
-
-//    private Marker locationMarker;
-
-//    private void markerLocation(LatLng latLng) {
-//        Log.i(TAG, "markerLocation(" + latLng + ")");
-//        String title = latLng.latitude + ", " + latLng.longitude;
-//        MarkerOptions markerOptions = new MarkerOptions()
-//                .position(latLng)
-//                .title(title);
-//        if (map != null) {
-//            if (locationMarker != null)
-//                locationMarker.remove();
-//            locationMarker = map.addMarker(markerOptions);
-//            float zoom = 15f;
-//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
-//            map.animateCamera(cameraUpdate);
-//        }
-//    }
-
-
     private Marker geoFenceMarker;
     private void markerForGeofence(LatLng latLng) {
         Log.i(TAG, "markerForGeofence(" + latLng + ")");
-        String title = latLng.latitude + ", " + latLng.longitude;
+
         // Define marker options
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                .title(title);
+                .title("Arena");
         if (map != null) {
             // Remove last geoFenceMarker
             if (geoFenceMarker != null)
                 geoFenceMarker.remove();
             geoFenceMarker = map.addMarker(markerOptions);
-            float zoom = 14f;
+            float zoom = 12f;
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
             map.animateCamera(cameraUpdate);
         }
@@ -342,7 +271,8 @@ public class MainActivity extends AppCompatActivity
 
     // Start Geofence creation process
     private void startGeofence() {
-        LatLng college = new LatLng(43.716412, -79.33437789999999);
+        LatLng college = new LatLng(43.773053, -79.334813);
+        LatLng prison = new LatLng(43.775398, -79.336056);
         markerForGeofence(college);
         Log.i(TAG, "startGeofence()");
         if (geoFenceMarker != null) {
@@ -357,8 +287,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final long GEO_DURATION = 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 1000.0f; // in meters
-
+    private static final float GEOFENCE_RADIUS = 150.0f; // in meters
+    private static final float PRISON_RADIUS = 50.0f;
     // Create a Geofence
     private Geofence createGeofence(LatLng latLng, float radius) {
         Log.d(TAG, "createGeofence");
@@ -422,6 +352,7 @@ public class MainActivity extends AppCompatActivity
 
     // Draw Geofence circle on GoogleMap
     private Circle geoFenceLimits;
+    private Circle prisonLimits;
 
     private void drawGeofence() {
         Log.d(TAG, "drawGeofence()");
@@ -435,6 +366,33 @@ public class MainActivity extends AppCompatActivity
                 .fillColor(Color.argb(100, 150, 150, 150))
                 .radius(GEOFENCE_RADIUS);
         geoFenceLimits = map.addCircle(circleOptions);
+
+        //Adding a static prison
+        LatLng prison = new LatLng(43.774844, -79.335720);
+        CircleOptions prisonCircle = new CircleOptions()
+                .center(prison)
+                .strokeColor(Color.argb(50, 70, 70, 70))
+                .fillColor(Color.argb(100, 150, 150, 150))
+                .radius(PRISON_RADIUS);
+        prisonLimits = map.addCircle(prisonCircle);
+
+        //Adding Static Flags
+        LatLng flagA = new LatLng(43.773705, -79.335894);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga);
+        MarkerOptions flagmarkera = new MarkerOptions()
+                .position(flagA)
+                .icon(BitmapDescriptorFactory.fromBitmap(bm))
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .title("FlagA");
+        LatLng flagb = new LatLng(43.772738, -79.333472);
+        Bitmap bm2 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flagb);
+        MarkerOptions flagmarkerb = new MarkerOptions()
+                .position(flagb)
+                .icon(BitmapDescriptorFactory.fromBitmap(bm2))
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .title("FlagB");
+        map.addMarker(flagmarkera);
+        map.addMarker(flagmarkerb);
     }
 
 //    private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
@@ -487,8 +445,11 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "removeGeofenceDraw()");
         if (geoFenceMarker != null)
             geoFenceMarker.remove();
-        if (geoFenceLimits != null)
+        if (geoFenceLimits != null) {
             geoFenceLimits.remove();
+            prisonLimits.remove();
+        }
+
     }
 
     //get data from fire base and show it on the map.
@@ -500,16 +461,10 @@ public class MainActivity extends AppCompatActivity
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
                     List<Player> players =  new ArrayList<>();
-//                    Log.d(TAG, "onDataChange: $$$$$$$$$$$$$$$$$$$$$$$$$$");
-//                    Log.d(TAG, "onChildAdded: ==================PLayer Update============= "+ dataSnapshot.getValue().toString());
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        Log.d(TAG, "onDataChange: ==================Player Object To String========"+snapshot.getValue().toString());
                         Player player = snapshot.getValue(Player.class);
                         players.add(player);
                         Log.d(TAG, "Name: "+ player.playerName);
-//                        Log.d(TAG, "Latitude: "+player.latitude);
-//                        Log.d(TAG, "Longitude: "+player.longitude);
-//                        Log.d(TAG, "Team Name: "+player.teamName);
                     }
                     setPlayerMaker(players);
                 }
