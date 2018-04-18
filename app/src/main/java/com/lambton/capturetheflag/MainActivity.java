@@ -498,13 +498,15 @@ public class MainActivity extends AppCompatActivity
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
                     List<Player> players =  new ArrayList<>();
+//                    Log.d(TAG, "onDataChange: $$$$$$$$$$$$$$$$$$$$$$$$$$");
 //                    Log.d(TAG, "onChildAdded: ==================PLayer Update============= "+ dataSnapshot.getValue().toString());
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 //                        Log.d(TAG, "onDataChange: ==================Player Object To String========"+snapshot.getValue().toString());
                         Player player = snapshot.getValue(Player.class);
                         players.add(player);
-                        Log.d(TAG, "Name: "+player.getPlayerName());
+                        Log.d(TAG, "Name: "+ player.playerName);
 //                        Log.d(TAG, "Latitude: "+player.latitude);
 //                        Log.d(TAG, "Longitude: "+player.longitude);
 //                        Log.d(TAG, "Team Name: "+player.teamName);
@@ -517,7 +519,7 @@ public class MainActivity extends AppCompatActivity
 
                 }
             };
-            databaseReference.child("Player").addValueEventListener(valueEventListener);
+            databaseReference.addValueEventListener(valueEventListener);
 
         }
     }
