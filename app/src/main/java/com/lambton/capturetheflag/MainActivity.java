@@ -484,6 +484,7 @@ public class MainActivity extends AppCompatActivity
     public void setPlayerMaker(List<Player> players) {
         if (players.size() != 0) {
             map.clear();
+            Marker m;
             for (Player player : players) {
                 String TeamA = "Team-A";
                 String TeamB = "Team-B";
@@ -492,29 +493,28 @@ public class MainActivity extends AppCompatActivity
                 Boolean PlayerFlag = player.flagValue;
                 LatLng latLng = new LatLng(player.latitude, player.longitude);
 
-                if (PlayerName == TeamA) {
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama)));
+                if (PlayerName.equals(TeamA)) {
+                    m = map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama))));
+
+                }else{
+
+                     m = map.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(player.getPlayerName())
+                            .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teamb))));
 
                 }
 
-                if (PlayerName == TeamA  && PlayerFlag == FlagStatus){
-
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag)));
-
-
-                }
-
-                if (PlayerName == TeamB  && PlayerFlag == FlagStatus){
-
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag)));
+                if (PlayerName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
+                    m.remove();
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag))));
 
 
                 }
 
-                else {
-
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teamb)));
-
+                if (PlayerName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
+                    m.remove();
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag))));
 
                 }
             }
