@@ -272,7 +272,8 @@ public class MainActivity extends AppCompatActivity
 
     // Start Geofence creation process
     private void startGeofence() {
-        LatLng college = new LatLng(43.773053, -79.334813);
+        LatLng college = new LatLng(43.716389, -79.334517);
+//        LatLng college = new LatLng(43.773053, -79.334813);
         LatLng prison = new LatLng(43.775398, -79.336056);
         markerForGeofence(college);
         Log.i(TAG, "startGeofence()");
