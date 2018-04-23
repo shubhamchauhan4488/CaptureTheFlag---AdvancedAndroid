@@ -69,8 +69,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/teama.png" />
-                                      <entry key="outputName" value="ic_teama" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/flag.png" />
+                                      <entry key="outputName" value="ic_playerflag" />
                                     </map>
                                   </option>
                                 </PersistentState>

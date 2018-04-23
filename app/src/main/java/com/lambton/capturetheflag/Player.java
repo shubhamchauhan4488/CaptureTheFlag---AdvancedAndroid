@@ -7,13 +7,15 @@ class Player {
     String playerTeam;
     Double latitude;
     Double longitude;
+    Boolean flagValue;
 
-    public Player(String playerId, String playerName, String playerTeam, Double latitude, Double longitude) {
+    public Player(String playerId, String playerName, String playerTeam, Double latitude, Double longitude, Boolean flagValue) {
         this.playerId = playerId;
         this.playerName = playerName;
         this.playerTeam = playerTeam;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.flagValue = flagValue;
     }
 
     public Player(double latitude, double longitude) {

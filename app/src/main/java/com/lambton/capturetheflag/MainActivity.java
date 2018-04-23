@@ -486,13 +486,32 @@ public class MainActivity extends AppCompatActivity
             map.clear();
             for (Player player : players) {
                 String TeamA = "Team-A";
+                String TeamB = "Team-B";
+                Boolean FlagStatus = true;
                 String PlayerName = player.playerTeam;
+                Boolean PlayerFlag = player.flagValue;
                 LatLng latLng = new LatLng(player.latitude, player.longitude);
 
                 if (PlayerName == TeamA) {
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama)));
 
-                } else {
+                }
+
+                if (PlayerName == TeamA  && PlayerFlag == FlagStatus){
+
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag)));
+
+
+                }
+
+                if (PlayerName == TeamB  && PlayerFlag == FlagStatus){
+
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag)));
+
+
+                }
+
+                else {
 
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teamb)));
 
