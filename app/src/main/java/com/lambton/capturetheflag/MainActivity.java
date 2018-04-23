@@ -55,14 +55,14 @@ public class MainActivity extends AppCompatActivity
         GoogleMap.OnMarkerClickListener,
         ResultCallback<Status> {
 
+
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
-//    private Location lastLocation;
-
+    //    private Location lastLocation;
     private MapFragment mapFragment;
     private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
 
@@ -78,18 +78,18 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // initialize GoogleMaps
-
         databaseReference = FirebaseDatabase.getInstance().getReference().child("players");
-
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         // create GoogleApiClient
         createGoogleApi();
-        if(checkPermission()){
+        if (checkPermission()) {
             Toast.makeText(this, "Go ahead and Create the Playing Area from Menu", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             askPermission();
         }
+
+
     }
 
     // Create GoogleApiClient instance
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         // Call GoogleApiClient connection when starting the Activity
         googleApiClient.connect();
     }
+
     //Disconnecting google api client on start()
     @Override
     protected void onStop() {
@@ -120,7 +121,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     //Creting the 3 dots on top right : MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     // MARK : PERMISSIONS HANDLING
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
 //        map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
 
- }
+    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Marker geoFenceMarker;
+
     private void markerForGeofence(LatLng latLng) {
         Log.i(TAG, "markerForGeofence(" + latLng + ")");
 
@@ -289,6 +290,7 @@ public class MainActivity extends AppCompatActivity
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 150.0f; // in meters
     private static final float PRISON_RADIUS = 50.0f;
+
     // Create a Geofence
     private Geofence createGeofence(LatLng latLng, float radius) {
         Log.d(TAG, "createGeofence");
@@ -453,18 +455,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     //get data from fire base and show it on the map.
-    public void getUpdateOnMap(){
+    public void getUpdateOnMap() {
 //        = null;
-        if(valueEventListener  == null){
+        if (valueEventListener == null) {
             valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
-                    List<Player> players =  new ArrayList<>();
+                    Log.d(TAG, "onDataChange: ==============Sanapshot===========" + dataSnapshot.toString());
+                    List<Player> players = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Player player = snapshot.getValue(Player.class);
                         players.add(player);
-                        Log.d(TAG, "Name: "+ player.playerName);
+                        Log.d(TAG, "Name: " + player.playerName);
                     }
                     setPlayerMaker(players);
                 }
@@ -479,16 +481,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void setPlayerMaker(List<Player> players){
-        if(players.size() != 0) {
+    public void setPlayerMaker(List<Player> players) {
+        if (players.size() != 0) {
             map.clear();
             for (Player player : players) {
-                LatLng latLng = new LatLng(player.latitude,player.longitude);
+
+                String PlayerName = player.playerTeam;
+                LatLng latLng = new LatLng(player.latitude, player.longitude);
                 map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()));
+                if (PlayerName == "Team-A") {
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker)));
+
+                }
+                    else{
+
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.flaga)));
+
+
+                    }
+                }
             }
         }
+
     }
 
-
-}
 
