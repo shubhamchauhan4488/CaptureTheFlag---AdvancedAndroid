@@ -272,8 +272,7 @@ public class MainActivity extends AppCompatActivity
 
     // Start Geofence creation process
     private void startGeofence() {
-        LatLng college = new LatLng(43.716389, -79.334517);
-//        LatLng college = new LatLng(43.773053, -79.334813);
+        LatLng college = new LatLng(43.773053, -79.334813);
         LatLng prison = new LatLng(43.775398, -79.336056);
         markerForGeofence(college);
         Log.i(TAG, "startGeofence()");
@@ -486,24 +485,23 @@ public class MainActivity extends AppCompatActivity
         if (players.size() != 0) {
             map.clear();
             for (Player player : players) {
-
+                String TeamA = "Team-A";
                 String PlayerName = player.playerTeam;
                 LatLng latLng = new LatLng(player.latitude, player.longitude);
-                map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()));
-                if (PlayerName == "Team-A") {
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker)));
 
-                }
-                    else{
+                if (PlayerName == TeamA) {
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama)));
 
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.flaga)));
+                } else {
+
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teamb)));
 
 
-                    }
                 }
             }
-        }
 
+        }
     }
+}
 
 
