@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity
                 if (PlayerName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
                     m.remove();
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag))));
-
+                    
 
                 }
 

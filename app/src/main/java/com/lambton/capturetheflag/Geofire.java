@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 //<<<<<<< HEAD
 //=======
@@ -100,16 +101,25 @@ public class Geofire extends FragmentActivity implements OnMapReadyCallback,
         mMap.addCircle(new CircleOptions()
                 .center(sydney)
                 .radius(GEOFENCE_RADIUS) //in mts
-                .strokeColor(Color.BLUE)
-                .fillColor(0x220000FF)
-                .strokeWidth(5.0f));
+                .strokeColor(Color.BLUE));
+//                .fillColor(0x220000FF)
+//                .strokeWidth(5.0f));
 
         mMap.addCircle(new CircleOptions()
                 .center(college)
                 .radius(GEOFENCE_PLAYFIELD_RADIUS) //in mts
-                .strokeColor(Color.BLUE)
+                .strokeColor(Color.BLUE));
+//                .fillColor(0x220000FF)
+//                .strokeWidth(5.0f));
+
+
+        mMap.addPolygon(new PolygonOptions()
+            .add(new LatLng(43.774292, -79.335381),new LatLng(43.774346,-79.334984),new LatLng(43.773890,-79.335200),new LatLng(43.773966,-79.334822))
+            .strokeColor(Color.BLUE)
                 .fillColor(0x220000FF)
                 .strokeWidth(5.0f));
+
+
 
         geoFenceMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Lambton College"));
 

@@ -13,51 +13,28 @@
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="launcher">
-                              <value>
-                                <PersistentState>
-                                  <option name="children">
-                                    <map>
-                                      <entry key="backgroundImage">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="scalingPercent" value="0" />
-                                                <entry key="trimmed" value="true" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                    </map>
-                                  </option>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/teama.png" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground" />
-                                      <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_usera" />
-                                      <entry key="showSafeZone" value="false" />
-                                      <entry key="webIconShape" value="NONE" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
                             <entry key="launcherLegacy">
                               <value>
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="clipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="50" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="image">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="15" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="paddingPercent" value="50" />
                                               </map>
                                             </option>
                                           </PersistentState>
