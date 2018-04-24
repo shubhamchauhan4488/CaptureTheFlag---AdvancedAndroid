@@ -13,12 +13,12 @@
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="launcherLegacy">
+                            <entry key="actionbar">
                               <value>
                                 <PersistentState>
                                   <option name="children">
                                     <map>
-                                      <entry key="clipArt">
+                                      <entry key="image">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
@@ -29,6 +29,25 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/man-user.png" />
+                                      <entry key="outputName" value="ic_teama" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="e5533c" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="launcherLegacy">
+                              <value>
+                                <PersistentState>
+                                  <option name="children">
+                                    <map>
                                       <entry key="image">
                                         <value>
                                           <PersistentState>
@@ -46,8 +65,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/flag.png" />
-                                      <entry key="outputName" value="ic_playerflag" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/man-user.png" />
+                                      <entry key="outputName" value="ic_teamb" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -57,7 +76,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>
