@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         GoogleMap.OnMarkerClickListener,
         ResultCallback<Status> {
 
-
+    //Initializing of variables
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
     private Boolean isFlagA_Picked = false;
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         return intent;
     }
 
+    //On create function
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
