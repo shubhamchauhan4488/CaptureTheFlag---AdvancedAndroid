@@ -38,14 +38,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkwGKaUNThgHGcQft2MBAA8QhwOet0k30" />
 
-        <activity
-
-        android:name=".Geofire"
-            android:label="@string/title_activity_geofire"
-            >
-
-
-        </activity>
     </application>
 
 </manifest>

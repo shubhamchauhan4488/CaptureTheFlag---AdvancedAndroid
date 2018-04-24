@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity
 
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
-
+    private Boolean isFlagA_Picked = false;
+    private Boolean isFlagB_Picked = false;
+    Marker m1;
+    Marker m2;
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
             case R.id.clear: {
+
                 clearGeofence();
                 return true;
             }
@@ -204,30 +208,6 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-//    private LocationRequest locationRequest;
-//    // Defined in mili seconds.
-//    // This number in extremely low, and should be used only for debug
-//    private final int UPDATE_INTERVAL = 1000;
-//    private final int FASTEST_INTERVAL = 900;
-//
-//    // Start location Updates
-//    private void startLocationUpdates() {
-//        Log.i(TAG, "startLocationUpdates()");
-//        locationRequest = LocationRequest.create()
-//                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-//                .setInterval(UPDATE_INTERVAL)
-//                .setFastestInterval(FASTEST_INTERVAL);
-//
-//        if (checkPermission())
-//            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-//    }
-//
-//    @Override
-//    public void onLocationChanged(Location location) {
-////        Log.d(TAG, "onLocationChanged ["+location+"]");
-////        lastLocation =
-////        writeActualLocation(location);
-//    }
 
     // GoogleApiClient.ConnectionCallbacks connected
     @Override
@@ -265,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                 geoFenceMarker.remove();
             geoFenceMarker = map.addMarker(markerOptions);
             float zoom = 12f;
+
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
             map.animateCamera(cameraUpdate);
         }
@@ -272,8 +253,8 @@ public class MainActivity extends AppCompatActivity
 
     // Start Geofence creation process
     private void startGeofence() {
-        LatLng college = new LatLng(43.773053, -79.334813);
-        LatLng prison = new LatLng(43.775398, -79.336056);
+        LatLng college = new LatLng(43.773219, -79.334874);
+        LatLng prison = new LatLng(43.775793, -79.336210);
         markerForGeofence(college);
         Log.i(TAG, "startGeofence()");
         if (geoFenceMarker != null) {
@@ -378,7 +359,13 @@ public class MainActivity extends AppCompatActivity
                 .radius(PRISON_RADIUS);
         prisonLimits = map.addCircle(prisonCircle);
 
+        addFlagMarkers();
+
+    }
+
+    public void addFlagMarkers(){
         //Adding Static Flags
+
         LatLng flagA = new LatLng(43.773705, -79.335894);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga);
         MarkerOptions flagmarkera = new MarkerOptions()
@@ -393,8 +380,17 @@ public class MainActivity extends AppCompatActivity
                 .icon(BitmapDescriptorFactory.fromBitmap(bm2))
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .title("FlagB");
-        map.addMarker(flagmarkera);
-        map.addMarker(flagmarkerb);
+        m1 = map.addMarker(flagmarkera);
+        m2 = map.addMarker(flagmarkerb);
+
+        if (isFlagA_Picked){
+            m2.remove();
+        }
+        if (isFlagB_Picked){
+            m1.remove();
+        }
+
+
     }
 
 //    private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
@@ -440,6 +436,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        removeGeofenceDraw();
+        m1.remove();
+        m2.remove();
     }
 
     //Removing geofence
@@ -449,6 +448,8 @@ public class MainActivity extends AppCompatActivity
             geoFenceMarker.remove();
         if (geoFenceLimits != null) {
             geoFenceLimits.remove();
+        }
+        if (prisonLimits != null) {
             prisonLimits.remove();
         }
 
@@ -484,41 +485,43 @@ public class MainActivity extends AppCompatActivity
     public void setPlayerMaker(List<Player> players) {
         if (players.size() != 0) {
             map.clear();
+            startGeofence();
             Marker m;
             for (Player player : players) {
                 String TeamA = "Team-A";
                 String TeamB = "Team-B";
                 Boolean FlagStatus = true;
-                String PlayerName = player.playerTeam;
+                String PlayerTeamName = player.playerTeam;
                 Boolean PlayerFlag = player.flagValue;
                 LatLng latLng = new LatLng(player.latitude, player.longitude);
-
-                if (PlayerName.equals(TeamA)) {
+                m = map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama))));
+                if (PlayerTeamName.equals(TeamA)  && !PlayerFlag.equals(FlagStatus)) {
                     m = map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama))));
 
-                }else{
+                }
 
-                     m = map.addMarker(new MarkerOptions()
+                if(PlayerTeamName.equals(TeamB)  && !PlayerFlag.equals(FlagStatus)){
+
+                    m = map.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(player.getPlayerName())
                             .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teamb))));
-
                 }
 
-                if (PlayerName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
+                if (PlayerTeamName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
+                    isFlagA_Picked = true;
+                    addFlagMarkers();
                     m.remove();
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag))));
-                    
-
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flagb))));
                 }
 
-                if (PlayerName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
+                if (PlayerTeamName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
+                    isFlagB_Picked = true;
+                    addFlagMarkers();
                     m.remove();
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_playerflag))));
-
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga))));
                 }
             }
-
         }
     }
 }
