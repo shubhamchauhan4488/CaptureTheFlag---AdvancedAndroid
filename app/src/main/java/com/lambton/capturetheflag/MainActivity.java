@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     //Initializing of variables
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
+    DatabaseReference databaseWinReference = FirebaseDatabase.getInstance().getReference().child("WIN");
     private Boolean isFlagA_Picked = false;
     private Boolean isFlagB_Picked = false;
     Marker m1;
@@ -95,6 +96,26 @@ public class MainActivity extends AppCompatActivity
         } else {
             askPermission();
         }
+
+        databaseWinReference.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ==============DATASanapshot==========="+dataSnapshot.toString());
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: ==============snapshot==========="+snapshot.toString());
+                    Boolean winvalue = (Boolean) snapshot.getValue();
+                    Log.d(TAG, "onDataChange: "+ winvalue);
+                    if(winvalue.equals(true)){
+                        Toast.makeText(MainActivity.this, "FLAG HAS BEEN PICKED by " + "Team A. Game Over.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
