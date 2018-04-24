@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="50" />
+                                                <entry key="paddingPercent" value="25" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -35,9 +35,9 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="imageAsset" value="$USER_HOME$/Downloads/man-user.png" />
-                                      <entry key="outputName" value="ic_teama" />
+                                      <entry key="outputName" value="ic_teamb" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="e5533c" />
+                                      <entry key="themeColor" value="4a98e5" />
                                     </map>
                                   </option>
                                 </PersistentState>
