@@ -38,6 +38,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -359,6 +362,8 @@ public class MainActivity extends AppCompatActivity
                 .radius(PRISON_RADIUS);
         prisonLimits = map.addCircle(prisonCircle);
 
+        Polyline line = map.addPolyline(new PolylineOptions().add(new LatLng(43.772680, -79.337346), new LatLng(43.773668,-79.332846)).width(10).color(Color.BLACK));
+
         addFlagMarkers();
 
     }
@@ -495,13 +500,14 @@ public class MainActivity extends AppCompatActivity
                 Boolean PlayerFlag = player.flagValue;
                 LatLng latLng = new LatLng(player.latitude, player.longitude);
                 m = map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama))));
-                if (PlayerTeamName.equals(TeamA)  && !PlayerFlag.equals(FlagStatus)) {
+                if (PlayerTeamName.equals(TeamA)  && PlayerFlag != FlagStatus) {
+                    m.remove();
                     m = map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_teama))));
 
                 }
 
-                if(PlayerTeamName.equals(TeamB)  && !PlayerFlag.equals(FlagStatus)){
-
+                if(PlayerTeamName.equals(TeamB)  && PlayerFlag != FlagStatus){
+                    m.remove();
                     m = map.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(player.getPlayerName())
@@ -509,17 +515,18 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (PlayerTeamName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
+                    isFlagA_Picked = true;
+                    addFlagMarkers();
+                    m.remove();
+                    m1.remove();
+                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga))));
+                }
+
+                if (PlayerTeamName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
                     isFlagB_Picked = true;
                     addFlagMarkers();
                     m.remove();
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flagb))));
-                }
-
-                if (PlayerTeamName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
-                    isFlagA_Picked = true;
-                    addFlagMarkers();
-                    m.remove();
-                    map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga))));
                 }
             }
         }
