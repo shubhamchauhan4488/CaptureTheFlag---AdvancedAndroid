@@ -383,10 +383,10 @@ public class MainActivity extends AppCompatActivity
         m1 = map.addMarker(flagmarkera);
         m2 = map.addMarker(flagmarkerb);
 
-        if (isFlagA_Picked){
+        if (isFlagB_Picked){
             m2.remove();
         }
-        if (isFlagB_Picked){
+        if (isFlagA_Picked){
             m1.remove();
         }
 
@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity
     public void setPlayerMaker(List<Player> players) {
         if (players.size() != 0) {
             map.clear();
-            startGeofence();
+            drawGeofence();
             Marker m;
             for (Player player : players) {
                 String TeamA = "Team-A";
@@ -509,14 +509,14 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (PlayerTeamName.equals(TeamA)  && PlayerFlag.equals(FlagStatus)){
-                    isFlagA_Picked = true;
+                    isFlagB_Picked = true;
                     addFlagMarkers();
                     m.remove();
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flagb))));
                 }
 
                 if (PlayerTeamName.equals(TeamB)  && PlayerFlag.equals(FlagStatus)) {
-                    isFlagB_Picked = true;
+                    isFlagA_Picked = true;
                     addFlagMarkers();
                     m.remove();
                     map.addMarker(new MarkerOptions().position(latLng).title(player.getPlayerName()).icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_flaga))));
