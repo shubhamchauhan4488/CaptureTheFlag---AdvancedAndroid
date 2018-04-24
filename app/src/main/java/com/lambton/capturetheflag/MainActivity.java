@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity
     private static final long GEO_DURATION = 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 150.0f; // in meters
-    private static final float PRISON_RADIUS = 50.0f;
+    private static final float PRISON_RADIUS = 40.0f;
 
     // Create a Geofence
     private Geofence createGeofence(LatLng latLng, float radius) {
